@@ -1,0 +1,162 @@
+Lab4:
+
+Lab Exercise: Test Case Design Techniques
+Out of 5 exercises, try to complete at least 3. If you are completing all 5, will be good for better understanding of all concepts. 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Lab -Exercise 1. Equivalence Class Partitioning
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+A web form accepts PIN codes which must be exactly 6 digits long and numeric.
+Write at least 6 test cases using Equivalence Class Partitioning (ECP), clearly indicating valid and invalid partitions.
+
+Sol:
+=====
+Equivalence Class Partitioning (ECP) :-- 
+
+For a PIN code that must be exactly   6 digits long and numeric  , we define the following equivalence classes:
+
+●Valid Partition:   Inputs with exactly 6 numeric digits.
+●Invalid Partition A:   Inputs with length ≠ 6 (too short, too long, or empty).
+●Invalid Partition B:   Inputs containing non-numeric characters (alphabets, special symbols, etc.).
+
+Test Cases:--  
+
+| Test Case | Value        | Partition      | Description                    | Expected Result |
+| --------- | ------------ | -------------  | ------------------------------ | --------------- |
+|   1       | `123456`     |    Valid       | A correct 6-digit numeric PIN. | Accepted        |
+|   2       | `12345`      |    Invalid (A) | Less than 6 digits.            | Rejected        |
+|   3       | `1234567`    |    Invalid (A) | More than 6 digits.            | Rejected        |
+|   4       | `ABCDEF`     |    Invalid (B) | All alphabetic characters.     | Rejected        |
+|   5       | `12 456`     |    Invalid (B) | Contains a special character.  | Rejected        |
+|   6       | \`\` (empty) |    Invalid (A) | Empty input (0 digits).        | Rejected        |
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Lab-Exercise 2. Boundary Value Analysis
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+A train ticket booking system allows booking for 1 to 6 seats at a time.
+Design test cases using BVA and include:
+●1 below minimum
+●Minimum value
+●Just above minimum
+●Just below maximum
+●Maximum value
+●Above maximum
+
+Sol:
+=====
+
+|   Test Case            |   Value   |   Description                          |   Expected Result                  |
+| ---------------------- | --------- | -------------------------------------- | ---------------------------------  |
+|    Below Minimum       | 0         | A value just below the lower boundary. |    Error: Invalid number of seats. |
+|    Minimum Value       | 1         | The exact lower boundary value.        |    Successful booking for 1 seat.  |
+|    Just Above Minimum  | 2         | A value just above the lower boundary. |    Successful booking for 2 seats. |
+|    Just Below Maximum  | 5         | A value just below the upper boundary. |    Successful booking for 5 seats. |
+|    Maximum Value       | 6         | The exact upper boundary value.        |    Successful booking for 6 seats. |
+|    Above Maximum       | 7         | A value just above the upper boundary. |    Error: Invalid number of seats. |
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Lab-Exercise 3. Decision Table Based Testing
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+A hotel reservation system offers a discount based on:
+●Member status (Member/Non-member)
+●Booking amount (> ₹5000)
+●Season (Peak/Off-season)
+Discount is given only if the user is a Member AND books for more than ₹5000 during Off-season.
+Create a decision table and write at least 4 test cases.
+
+Sol:
+=====
+Decision Table – Hotel Reservation Discount Rule:--
+
+|   Condition / Action        |  Rule 1    |   Rule 2   |   Rule 3   |   Rule 4   |   Rule 5   |   Rule 6   |   Rule 7   |   Rule 8   |
+| --------------------------- | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: |
+|   Member Status?            |      T     |      T     |      T     |      T     |      F     |      F     |      F     |      F     |
+|   Booking Amount > ₹5000?   |      T     |      T     |      F     |      F     |      T     |      T     |      F     |      F     |
+|   Season = Off-season?      |      T     |      F     |      T     |      F     |      T     |      F     |      T     |      F     |
+|   Apply Discount?           |      Yes   |      No    |      No    |      No    |      No    |      No    |      No    |      No    |
+
+  T = True  |  F = False  |  Yes = Discount applied  |  No = No discount 
+
+
+Test Cases Derived:--
+
+1.   Test Case 1 (Rule 1)  
+       Input:   Member = Yes  , Booking Amount = ₹5500  , Season = Off-season  
+       Expected Result:Discount applied  
+
+2.   Test Case 2 (Rule 2)  
+       Input:   Member = Yes  , Booking Amount = ₹6000  , Season = Peak-season  
+       Expected Result:No discount  
+
+3.   Test Case 3 (Rule 5)  
+       Input:   Member = No  , Booking Amount = ₹5200  , Season = Off-season  
+       Expected Result:No discount  
+
+4.   Test Case 4 (Rule 8)  
+       Input:   Member = No  , Booking Amount = ₹4500  , Season = Peak-season  
+       Expected Result:No discount  
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Lab-Exercise 4. State Transition Testing
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Design a state transition diagram and test cases for a traffic signal system with states:
+Red → Green → Yellow → Red.
+Include test cases for both normal transitions and an invalid state (e.g., going directly from Red to Yellow).
+
+Sol:
+=====
+State Transition Diagram:-- 
+
+A traffic signal system has three states:   Red, Green, Yellow  . The transitions are   sequential and cyclical  :
+●Red → Green   (after timer expires)
+●Green → Yellow   (after timer expires)
+●Yellow → Red   (after timer expires)
+
+ ->This cycle repeats indefinitely.
+ ->Any   direct skip transition   (like Red → Yellow) is considered   invalid  .
+
+
+Test Cases:--  
+Normal (Valid) Transitions:
+
+|   Test Case   |   Current State   |   Event/Condition   |   Expected Next State   |   Result    |
+| ------------- | ----------------- | ------------------- | ----------------------- | ----------  |
+|   TC1         | Red               | Timer expires       | Green                   | Pass        |
+|   TC2         | Green             | Timer expires       | Yellow                  | Pass        |
+|   TC3         | Yellow            | Timer expires       | Red                     | Pass        |
+
+
+Invalid (Unexpected) Transitions:   
+
+|   Test Case   |   Current State   |   Event/Condition          |   Expected Next State   |   Result    |
+| ------------- | ----------------- | -------------------------- | ----------------------- | ----------  |
+|   TC4         | Red               | Unexpected skip transition | Yellow                  | Fail        |
+|   TC5         | Green             | Unexpected skip transition | Red                     | Fail        |
+|   TC6         | Yellow            | Unexpected skip transition | Green                   | Fail        |
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Lab-Exercise 5. Error Guessing
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+For a mobile wallet app:
+●Suggest 5 possible error-prone test cases based on experience (e.g., entering special characters, long input, network failure, etc.)
+●Write expected outcomes.
+
+Sol:
+=====
+Test Cases for Mobile Wallet App (Error Guessing):--  
+
+|   Test Case                                   |   Error-Prone Condition                                                                             |   Expected Outcome                                                                                                                                    |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------  |
+|   1. Special Characters in Amount Field       | Entering invalid characters such as `₹`, `$`, ` `, `!`, `@`, ` `, or letters into the amount field. |    Input rejected with an error:  "Please enter a valid amount."  Transaction should not proceed.                                                     |
+|   2. Insufficient Funds                       | Attempting to transfer/send an amount greater than the wallet balance.                              |    Transaction declined with an error:  "Insufficient funds."  Balance must not go negative.                                                          |
+|   3. Interrupted Network during Transaction   | Network connection lost (Wi-Fi/Mobile data) after transaction initiation but before completion.     |    App must fail gracefully: show  "Transaction failed due to network error"  or mark as  pending . No false success message and no double deduction. |
+|   4. Extremely Large Amount Input             | Entering a value larger than the maximum allowed (e.g., `99999999999999`).                          |    App must block the transaction, showing:  "Amount exceeds transaction limit."                                                                      |
+|   5. Simultaneous Login on Multiple Devices   | Same account logged in on a second device while still active on the first.                          |    App should either auto-logout from the first device or show a security alert. Simultaneous sessions should not be allowed.                         |
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
